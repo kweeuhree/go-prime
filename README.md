@@ -22,7 +22,7 @@ This project aims to serve as a foundation for a comprehensive testing suite, ta
 1. **Clone the Repository**:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/kweeuhree/go-prime.git
    cd prime-number-checker
 
    ```
