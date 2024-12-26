@@ -1,6 +1,10 @@
 package main
 
-import "testing"
+import (
+	"io"
+	"os"
+	"testing"
+)
 
 func Test_isPrime(t *testing.T) {
 	// create table struct
@@ -34,4 +38,34 @@ func Test_isPrime(t *testing.T) {
 			t.Errorf("%s: expected %s, but got %s", entry.name, entry.msg, msg)
 		}
 	}
+}
+
+func Test_promt(t *testing.T) {
+	// save a copy of os.Stdout
+	currentOut := os.Stdout
+
+	// create a read and write pipe
+	r, w, _ := os.Pipe()
+
+	// set os.Stdout to write pipe
+	os.Stdout = w
+
+	prompt()
+
+	// close writer in order to avoid a resource leak
+	_ = w.Close()
+
+	// reset os.Stdout to what it was before
+	os.Stdout = currentOut
+
+	// read the output of prompt function from the read pipe
+	// this returns a slice of bites
+	out, _ := io.ReadAll(r)
+
+	// perform the test
+	// cast the slice of bites to a string
+	if string(out) != "-> " {
+		t.Errorf("incorrect prompt: expected -. but got %s", string(out))
+	}
+
 }
