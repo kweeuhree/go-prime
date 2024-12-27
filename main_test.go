@@ -3,6 +3,7 @@ package main
 import (
 	"io"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -40,7 +41,7 @@ func Test_isPrime(t *testing.T) {
 	}
 }
 
-func Test_promt(t *testing.T) {
+func Test_intro(t *testing.T) {
 	// save a copy of os.Stdout
 	currentOut := os.Stdout
 
@@ -50,7 +51,7 @@ func Test_promt(t *testing.T) {
 	// set os.Stdout to write pipe
 	os.Stdout = w
 
-	prompt()
+	intro()
 
 	// close writer in order to avoid a resource leak
 	_ = w.Close()
@@ -58,14 +59,14 @@ func Test_promt(t *testing.T) {
 	// reset os.Stdout to what it was before
 	os.Stdout = currentOut
 
-	// read the output of prompt function from the read pipe
+	// read the output of intro function from the read pipe
 	// this returns a slice of bites
 	out, _ := io.ReadAll(r)
 
 	// perform the test
 	// cast the slice of bites to a string
-	if string(out) != "-> " {
-		t.Errorf("incorrect prompt: expected -. but got %s", string(out))
+	if !strings.Contains(string(out), "Enter a whole number") {
+		t.Errorf("incorrect intro: expected -. but got %s", string(out))
 	}
 
 }
